@@ -1,4 +1,5 @@
 # npm-search MCP Server
+[![smithery badge](https://smithery.ai/badge/npm-search-mcp-server)](https://smithery.ai/server/npm-search-mcp-server)
 
 A Model Context Protocol server that allows you to search for npm packages by calling the `npm search` command.
 
@@ -11,6 +12,14 @@ A Model Context Protocol server that allows you to search for npm packages by ca
 ![Claude Screenshot](./screenshot.png)
 
 ## Installation
+
+### Installing via Smithery
+
+To install npm-search for Claude Desktop automatically via [Smithery](https://smithery.ai/server/npm-search-mcp-server):
+
+```bash
+npx -y @smithery/cli install npm-search-mcp-server --client claude
+```
 
 ### Using NPM (recommended)
 
