@@ -8,6 +8,8 @@ A Model Context Protocol server that allows you to search for npm packages by ca
   - Required arguments:
     - `query` (string): The search query.
 
+![Claude Screenshot](./screenshot.png)
+
 ## Installation
 
 ### Using NPM (recommended)
