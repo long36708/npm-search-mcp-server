@@ -3,6 +3,8 @@
 
 A Model Context Protocol server that allows you to search for npm packages by calling the `npm search` command.
 
+<a href="https://glama.ai/mcp/servers/yeb3luefvf"><img width="380" height="200" src="https://glama.ai/mcp/servers/yeb3luefvf/badge" alt="npm-search-mcp-server MCP server" /></a>
+
 ### Available Tools
 
 - `search_npm_packages` - Search for npm packages.
