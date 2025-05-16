@@ -1,3 +1,5 @@
+[![MseeP.ai Security Assessment Badge](https://mseep.net/pr/btwiuse-npm-search-mcp-server-badge.png)](https://mseep.ai/app/btwiuse-npm-search-mcp-server)
+
 # npm-search MCP Server
 [![smithery badge](https://smithery.ai/badge/npm-search-mcp-server)](https://smithery.ai/server/npm-search-mcp-server)
 
