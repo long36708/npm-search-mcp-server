@@ -1,8 +1,8 @@
-# NPM Search MCP Server 项目架构图
+# longmo-npm-search-mcp-server 项目架构图
 
 ## 项目概览
 
-NPM Search MCP Server 是一个基于 Model Context Protocol (MCP) 的服务器，用于搜索 npm 包。
+longmo-npm-search-mcp-server 是一个基于 Model Context Protocol (MCP) 的服务器，用于搜索 npm 包。
 
 ## 架构图
 

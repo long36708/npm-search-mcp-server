@@ -1,4 +1,4 @@
-# NPM Search MCP Server
+# longmo-npm-search-mcp-server
 
 一个用于搜索NPM包的Model Context Protocol (MCP)服务器。
 
@@ -120,6 +120,23 @@ echo '{"jsonrpc": "2.0", "id": 3, "method": "tools/call", "params": {"name": "se
   "total": 429013
 }
 ```
+
+## codebuddy 配置示例
+
+```json
+{    
+  "npm-search": {
+      "timeout": 60,
+      "type": "stdio",
+      "command": "pnpx",
+      "args": [
+        "longmo-npm-search-mcp-server"
+      ]
+    },
+}
+ ```
+
+> 注意使用 pnpx 时候不需要加 -y，使用npx的时候推荐加 -y
 
 ## 重构说明
 

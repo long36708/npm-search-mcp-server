@@ -1,8 +1,8 @@
-# NPM Search MCP Server 使用指南（更新版）
+# longmo-npm-search-mcp-server 使用指南（更新版）
 
 ## 概述
 
-NPM Search MCP Server 是一个基于 Model Context Protocol (MCP) 的服务器，提供 NPM 包搜索功能。经过重构，现在采用模块化架构，提供更好的可维护性和扩展性。
+longmo-npm-search-mcp-server 是一个基于 Model Context Protocol (MCP) 的服务器，提供 NPM 包搜索功能。经过重构，现在采用模块化架构，提供更好的可维护性和扩展性。
 
 ## 安装与构建
 
@@ -18,7 +18,7 @@ npm run build
 ### 直接使用
 
 ```bash
-npm install npm-search-mcp-server
+npm install longmo-npm-search-mcp-server
 ```
 
 ## 基本使用
@@ -48,7 +48,7 @@ npm run debug:stdio
 # 启动 MCP Inspector
 npm run debug
 # 或
-npx @modelcontextprotocol/inspector node dist/src/index.js
+pnpx @modelcontextprotocol/inspector node dist/src/index.js
 ```
 
 ### 命令行调试

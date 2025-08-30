@@ -1,5 +1,5 @@
 {
-  "name": "npm-search-mcp-server",
+  "name": "longmo-npm-search-mcp-server",
   "version": "0.1.1",
   "description": "MCP server for searching npm",
   "license": "MIT",
@@ -26,7 +26,7 @@
     "lint:fix": "eslint src/**/*.ts --fix",
     "format": "prettier --write src/**/*.ts",
     "clean": "shx rm -rf dist",
-    "debug": "npx @modelcontextprotocol/inspector node dist/src/index.js",
+    "debug": "pnpx @modelcontextprotocol/inspector node dist/src/index.js",
     "debug:stdio": "node dist/src/index.js",
     "test:mcp": "echo '{\"jsonrpc\": \"2.0\", \"id\": 1, \"method\": \"tools/list\", \"params\": {}}' | node dist/src/index.js"
   },

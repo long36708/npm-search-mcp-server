@@ -1,4 +1,4 @@
-# 项目更新说明
+# longmo-npm-search-mcp-server 项目更新说明
 
 ## 最新更新 (v0.1.1)
 
