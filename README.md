@@ -1,177 +1,132 @@
-[![MseeP.ai Security Assessment Badge](https://mseep.net/pr/btwiuse-npm-search-mcp-server-badge.png)](https://mseep.ai/app/btwiuse-npm-search-mcp-server)
+# NPM Search MCP Server
 
-# npm-search MCP Server
-[![smithery badge](https://smithery.ai/badge/npm-search-mcp-server)](https://smithery.ai/server/npm-search-mcp-server)
+一个用于搜索NPM包的Model Context Protocol (MCP)服务器。
 
-A Model Context Protocol server that allows you to search for npm packages by calling the `npm search` command.
+## 项目架构
 
-<a href="https://glama.ai/mcp/servers/yeb3luefvf"><img width="380" height="200" src="https://glama.ai/mcp/servers/yeb3luefvf/badge" alt="npm-search-mcp-server MCP server" /></a>
+重构后的项目采用模块化架构，具有清晰的关注点分离：
 
-### Available Tools
+```
+src/
+├── index.ts              # 应用程序入口点
+├── types/
+│   └── index.ts         # TypeScript类型定义
+├── utils/
+│   ├── logger.ts        # 日志工具
+│   └── validation.ts    # 输入验证工具
+├── services/
+│   └── npm-service.ts   # NPM API服务层
+├── tools/
+│   └── search-tool.ts   # MCP工具实现
+└── server/
+    └── mcp-server.ts    # MCP服务器主类
+```
 
-- `search_npm_packages` - Search for npm packages.
-  - Required arguments:
-    - `query` (string): The search query.
+## 架构优势
 
-![Claude Screenshot](./screenshot.png)
+1. **模块化设计**: 每个模块都有明确的职责
+2. **类型安全**: 完整的TypeScript类型定义
+3. **错误处理**: 统一的错误处理和日志记录
+4. **可测试性**: 模块化设计便于单元测试
+5. **可维护性**: 清晰的代码组织结构
 
-## Installation
-
-### Installing via Smithery
-
-To install npm-search for Claude Desktop automatically via [Smithery](https://smithery.ai/server/npm-search-mcp-server):
+## 构建和运行
 
 ```bash
-npx -y @smithery/cli install npm-search-mcp-server --client claude
+# 安装依赖
+npm install
+
+# 构建项目
+npm run build
+
+# 运行服务器
+npm start
 ```
 
-### Using NPM (recommended)
-
-Alternatively you can install `npm-search-mcp-server` via npm:
+## 开发
 
 ```bash
-npm install -g npm-search-mcp-server
+# 监听模式构建
+npm run watch
+
+# 运行测试
+npm test
+
+# 代码格式化
+npm run format
+
+# 代码检查
+npm run lint
 ```
 
-After installation, you can run it as a command using:
+## 使用方法
+
+### 启动服务器（重构后）
 
 ```bash
-npm-search-mcp-server
+# 使用重构后的正确入口点
+node dist/src/index.js
+
+# 或使用npm脚本进行调试
+npm run debug:stdio
 ```
 
-### Using uv
+### 调试与开发
 
-When using [`uv`](https://docs.astral.sh/uv/) no specific installation is needed. We will
-use [`uvx`](https://docs.astral.sh/uv/guides/tools/) to directly run *npm-search-mcp-server*.
+```bash
+# MCP Inspector图形界面调试（推荐）
+npm run debug
 
-## Configuration
+# 命令行测试
+npm run test:mcp
 
-### Configure for Claude.app
+# 手动测试工具列表
+echo '{"jsonrpc": "2.0", "id": 2, "method": "tools/list", "params": {}}' | node dist/src/index.js
 
-Add to your Claude settings:
-
-<details>
-<summary>Using npm installation</summary>
-
-```json
-"mcpServers": {
-  "npm-search": {
-    "command": "npx",
-    "args": ["-y", "npm-search-mcp-server"]
-  }
-}
+# 手动测试搜索功能
+echo '{"jsonrpc": "2.0", "id": 3, "method": "tools/call", "params": {"name": "search_npm_packages", "arguments": {"query": "react"}}}' | node dist/src/index.js
 ```
-</details>
 
-<details>
-<summary>Using uvx</summary>
+该服务器提供一个工具：
 
-```json
-"mcpServers": {
-  "npm-search": {
-    "command": "uvx",
-    "args": ["npm-search-mcp-server"]
-  }
-}
-```
-</details>
+- `search_npm_packages`: 搜索NPM包
 
-### Configure for Zed
+### 示例
 
-Add to your Zed settings.json:
-
-<details>
-<summary>Using npm installation</summary>
-
-```json
-"context_servers": {
-  "npm-search-mcp-server": {
-    "command": "npx",
-    "args": ["-y", "npm-search-mcp-server"]
-  }
-},
-```
-</details>
-
-<details>
-<summary>Using uvx</summary>
-
-```json
-"context_servers": [
-  "npm-search-mcp-server": {
-    "command": "uvx",
-    "args": ["npm-search-mcp-server"]
-  }
-],
-```
-</details>
-
-## Example Interactions
-
-1. Search for npm packages:
 ```json
 {
   "name": "search_npm_packages",
   "arguments": {
-    "query": "express"
+    "query": "react"
   }
 }
 ```
-Response:
+
+### 响应示例
+
 ```json
 {
-  "results": [
+  "packages": [
     {
-      "name": "express",
-      "description": "Fast, unopinionated, minimalist web framework",
-      "version": "4.17.1",
-      "author": "TJ Holowaychuk",
-      "license": "MIT"
-    },
-    ...
-  ]
+      "name": "react",
+      "version": "19.1.1",
+      "description": "React is a JavaScript library for building user interfaces.",
+      "downloads": {
+        "weekly": 44755208,
+        "monthly": 187989476
+      }
+    }
+  ],
+  "total": 429013
 }
 ```
 
-## Debugging
+## 重构说明
 
-You can use the MCP inspector to debug the server. For uvx installations:
+原始项目是一个单一的126行index.ts文件，包含所有功能。重构后：
 
-```bash
-npx @modelcontextprotocol/inspector npx -y npm-search-mcp-server
-```
-
-Or if you've installed the package in a specific directory or are developing on it:
-
-```bash
-cd path/to/servers/src/npm-search
-npx @modelcontextprotocol/inspector uv run npm-search-mcp-server
-```
-
-## Examples of Questions for Claude
-
-1. "Search for express package on npm"
-2. "Find packages related to react"
-3. "Show me npm packages for web development"
-
-## Build
-
-Docker build:
-
-```bash
-cd src/npm-search
-docker build -t mcp/npm-search .
-```
-
-## Contributing
-
-We encourage contributions to help expand and improve npm-search-mcp-server. Whether you want to add new npm-related tools, enhance existing functionality, or improve documentation, your input is valuable.
-
-For examples of other MCP servers and implementation patterns, see:
-https://github.com/modelcontextprotocol/servers
-
-Pull requests are welcome! Feel free to contribute new ideas, bug fixes, or enhancements to make npm-search-mcp-server even more powerful and useful.
-
-## License
-
-npm-search-mcp-server is licensed under the MIT License. This means you are free to use, modify, and distribute the software, subject to the terms and conditions of the MIT License. For more details, please see the LICENSE file in the project repository.
+- **分离关注点**: 将不同功能分离到专门的模块中
+- **提高可读性**: 每个文件都有明确的目的
+- **增强可测试性**: 模块化设计便于编写单元测试
+- **改善维护性**: 更容易添加新功能和修复bug
+- **类型安全**: 完整的TypeScript类型系统支持

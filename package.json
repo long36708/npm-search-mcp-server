@@ -3,21 +3,32 @@
   "version": "0.1.1",
   "description": "MCP server for searching npm",
   "license": "MIT",
-  "author": "Anthropic, PBC (https://anthropic.com)",
+  "author": "longmo, Anthropic, PBC (https://anthropic.com)",
   "homepage": "https://modelcontextprotocol.io",
   "repository": "https://github.com/btwiuse/npm-search-mcp-server",
   "bugs": "https://github.com/modelcontextprotocol/servers/issues",
   "type": "module",
   "bin": {
-    "npm-search-mcp-server": "dist/index.js"
+    "npm-search-mcp-server": "dist/src/index.js"
   },
   "files": [
     "dist"
   ],
   "scripts": {
-    "build": "tsc && shx chmod +x dist/*.js",
+    "build": "tsc && shx chmod +x dist/index.js",
     "prepare": "npm run build",
-    "watch": "tsc --watch"
+    "watch": "tsc --watch",
+    "dev": "tsc --watch",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage",
+    "lint": "eslint src/**/*.ts",
+    "lint:fix": "eslint src/**/*.ts --fix",
+    "format": "prettier --write src/**/*.ts",
+    "clean": "shx rm -rf dist",
+    "debug": "npx @modelcontextprotocol/inspector node dist/src/index.js",
+    "debug:stdio": "node dist/src/index.js",
+    "test:mcp": "echo '{\"jsonrpc\": \"2.0\", \"id\": 1, \"method\": \"tools/list\", \"params\": {}}' | node dist/src/index.js"
   },
   "dependencies": {
     "@modelcontextprotocol/sdk": "1.0.1"
