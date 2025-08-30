@@ -2,40 +2,59 @@
 
 ## 项目概览
 
-longmo-npm-search-mcp-server 是一个基于 Model Context Protocol (MCP) 的服务器，用于搜索 npm 包。
+longmo-npm-search-mcp-server 是一个基于 Model Context Protocol (MCP) 的服务器，用于搜索 npm 包。支持多种 NPM Registry 配置，具有模块化设计和完善的错误处理。
 
-## 架构图
+## 当前实现架构图
 
 ```mermaid
 graph TB
-    subgraph "NPM Search MCP Server"
-        A[index.ts] --> B[MCP Server]
-        B --> C[NPM Search Tool]
-        C --> D[NPM Registry API]
+    subgraph "MCP Clients MCP客户端"
+        F[Claude Desktop]
+        G[MCP Inspector] 
+        H[其他MCP客户端]
     end
     
-    subgraph "External Services"
-        D --> E[npmjs.com Registry]
+    subgraph "NPM Search MCP Server 核心服务"
+        A[index.ts<br/>入口点] --> B[mcp-server.ts<br/>MCP服务器]
+        B --> C[search-tool.ts<br/>搜索工具]
+        C --> D[hybrid-npm-service.ts<br/>混合NPM服务]
+        
+        subgraph "工具模块"
+            L[logger.ts<br/>日志]
+            V[validation.ts<br/>验证]
+            T[types/index.ts<br/>类型]
+        end
     end
     
-    subgraph "Client Applications"
-        F[MCP Client] --> B
-        G[Claude Desktop] --> B
-        H[Other MCP Clients] --> B
+    subgraph "NPM Registry 注册表"
+        E1[NPM Official<br/>registry.npmjs.org]
+        E2[Taobao Mirror<br/>registry.npmmirror.com]
+        E3[Custom Registry<br/>自定义镜像]
     end
     
-    subgraph "Build & Deploy"
-        I[TypeScript Source] --> J[Build Process]
-        J --> K[JavaScript Output]
-        K --> L[Docker Container]
-        L --> M[Deployment]
-    end
+    F -.->|stdio| B
+    G -.->|stdio| B
+    H -.->|stdio| B
+    
+    D --> E1
+    D --> E2
+    D --> E3
+    
+    C -.-> V
+    D -.-> L
+    B -.-> L
+    A -.-> L
+    
+    C -.-> T
+    D -.-> T
     
     style A fill:#e1f5fe
     style B fill:#f3e5f5
     style C fill:#e8f5e8
     style D fill:#fff3e0
-    style E fill:#ffebee
+    style E1 fill:#ffebee
+    style E2 fill:#ffebee
+    style E3 fill:#ffebee
 ```
 
 ## 组件说明

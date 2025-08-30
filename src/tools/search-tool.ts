@@ -1,13 +1,13 @@
 import { Tool } from '@modelcontextprotocol/sdk/types.js';
-import { NpmService } from '../services/npm-service.js';
+import { HybridNpmService } from '../services/hybrid-npm-service.js';
 import { validateSearchQuery, validateSearchOptions } from '../utils/validation.js';
 import { logger } from '../utils/logger.js';
 
 export class SearchTool {
-  private npmService: NpmService;
+  private npmService: HybridNpmService;
   
-  constructor() {
-    this.npmService = new NpmService();
+  constructor(registryUrl?: string) {
+    this.npmService = new HybridNpmService(registryUrl);
   }
   
   getTool(): Tool {
@@ -40,11 +40,18 @@ export class SearchTool {
         sortBy: args.sortBy,
       });
       
+      // 添加模式信息到结果中
+      const resultWithMode = {
+        ...result,
+        mode: this.npmService.getMode(),
+        registry: this.npmService.getRegistryInfo(),
+      };
+      
       return {
         content: [
           {
             type: 'text',
-            text: JSON.stringify(result, null, 2),
+            text: JSON.stringify(resultWithMode, null, 2),
           },
         ],
       };
@@ -60,5 +67,13 @@ export class SearchTool {
         isError: true,
       };
     }
+  }
+  
+  getServiceMode(): 'cli' | 'api' {
+    return this.npmService.getMode();
+  }
+  
+  getRegistryInfo(): string {
+    return this.npmService.getRegistryInfo();
   }
 }

@@ -1,6 +1,6 @@
 {
   "name": "longmo-npm-search-mcp-server",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "MCP server for searching npm",
   "license": "MIT",
   "author": "longmo, Anthropic, PBC (https://anthropic.com)",
@@ -9,10 +9,12 @@
   "bugs": "https://github.com/modelcontextprotocol/servers/issues",
   "type": "module",
   "bin": {
-    "npm-search-mcp-server": "dist/src/index.js"
+    "longmo-npm-search-mcp-server": "dist/src/index.js"
   },
   "files": [
-    "dist"
+    "dist",
+    "README.md",
+    "LICENSE"
   ],
   "scripts": {
     "build": "tsc && shx chmod +x dist/index.js",
@@ -28,7 +30,10 @@
     "clean": "shx rm -rf dist",
     "debug": "pnpx @modelcontextprotocol/inspector node dist/src/index.js",
     "debug:stdio": "node dist/src/index.js",
-    "test:mcp": "echo '{\"jsonrpc\": \"2.0\", \"id\": 1, \"method\": \"tools/list\", \"params\": {}}' | node dist/src/index.js"
+    "test:mcp": "echo '{\"jsonrpc\": \"2.0\", \"id\": 1, \"method\": \"tools/list\", \"params\": {}}' | node dist/src/index.js",
+    "check-config": "node scripts/check-hybrid-config.js",
+    "prepublishOnly": "npm run build && node scripts/pre-publish.js",
+    "pre-publish": "node scripts/pre-publish.js"
   },
   "dependencies": {
     "@modelcontextprotocol/sdk": "1.0.1"

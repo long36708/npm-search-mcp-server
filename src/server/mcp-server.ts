@@ -11,7 +11,7 @@ export class NpmSearchServer {
   private server: Server;
   private searchTool: SearchTool;
   
-  constructor() {
+  constructor(registryUrl?: string) {
     this.server = new Server(
       {
         name: 'npm-search-mcp-server',
@@ -24,7 +24,7 @@ export class NpmSearchServer {
       }
     );
     
-    this.searchTool = new SearchTool();
+    this.searchTool = new SearchTool(registryUrl);
     this.setupHandlers();
   }
   
@@ -49,6 +49,7 @@ export class NpmSearchServer {
   async run(): Promise<void> {
     const transport = new StdioServerTransport();
     await this.server.connect(transport);
-    logger.info('NPM Search MCP Server started');
+    logger.info(`NPM Search MCP Server started in ${this.searchTool.getServiceMode()} mode`);
+    logger.info(`Registry info: ${this.searchTool.getRegistryInfo()}`);
   }
 }

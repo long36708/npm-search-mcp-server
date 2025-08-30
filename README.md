@@ -15,7 +15,7 @@ src/
 │   ├── logger.ts        # 日志工具
 │   └── validation.ts    # 输入验证工具
 ├── services/
-│   └── npm-service.ts   # NPM API服务层
+│   └── hybrid-npm-service.ts   # 混合NPM服务层
 ├── tools/
 │   └── search-tool.ts   # MCP工具实现
 └── server/
