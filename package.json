@@ -11,14 +11,19 @@
   "bin": {
     "longmo-npm-search-mcp-server": "dist/src/index.js"
   },
+  "os": [
+    "darwin",
+    "linux",
+    "win32"
+  ],
   "files": [
     "dist",
     "README.md",
     "LICENSE"
   ],
   "scripts": {
-    "build:mac": "tsc && shx chmod +x dist/index.js",
-    "build": "tsc",
+    "build": "tsc && shx chmod +x dist/src/index.js",
+    "postbuild": "node scripts/create-windows-wrapper.js",
     "prepare": "npm run build",
     "watch": "tsc --watch",
     "dev": "tsc --watch",

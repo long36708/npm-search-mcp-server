@@ -43,6 +43,32 @@ npm run build
 npm start
 ```
 
+## 🪟 Windows 兼容性
+
+**重要提示**: 此MCP服务器现已完全支持Windows系统！
+
+### Windows 用户快速开始
+
+```bash
+# 全局安装
+npm install -g longmo-npm-search-mcp-server
+
+# 直接使用
+longmo-npm-search-mcp-server
+
+# 或使用 npx
+npx longmo-npm-search-mcp-server
+```
+
+### 已解决的Windows问题
+
+1. ✅ **Shebang兼容性**: 自动生成Windows批处理包装器
+2. ✅ **路径分隔符**: 使用跨平台路径处理
+3. ✅ **权限设置**: 使用`shx`提供跨平台支持
+4. ✅ **构建流程**: 自动创建Windows兼容文件
+
+详细的Windows兼容性信息请查看: [Windows兼容性指南](docs/WINDOWS_COMPATIBILITY.md)
+
 ## 开发
 
 ```bash
