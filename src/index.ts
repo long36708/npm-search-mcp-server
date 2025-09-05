@@ -5,8 +5,9 @@ import { logger } from './utils/logger.js';
 
 async function main() {
   try {
-    // 支持通过环境变量配置NPM registry，默认使用npm官方API避免配置警告
-    const registryUrl = process.env.NPM_REGISTRY_URL || 'https://registry.npmjs.org';
+    // 支持通过环境变量配置NPM registry
+    // 如果没有设置环境变量，则不传递registryUrl，使用CLI模式继承用户npm配置
+    const registryUrl = process.env.NPM_REGISTRY_URL || undefined;
     const server = new NpmSearchServer(registryUrl);
     await server.run();
   } catch (error) {

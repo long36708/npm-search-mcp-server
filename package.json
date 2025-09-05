@@ -1,6 +1,6 @@
 {
   "name": "longmo-npm-search-mcp-server",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "description": "MCP server for searching npm",
   "license": "MIT",
   "author": "longmo, Anthropic, PBC (https://anthropic.com)",

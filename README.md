@@ -36,11 +36,14 @@ src/
 # 安装依赖
 npm install
 
-# 构建项目
+# 构建项目（生成dist目录）
 npm run build
 
-# 运行服务器
-npm start
+# 全局安装使用
+npm install -g .
+
+# 或直接运行构建后的文件
+node dist/src/index.js
 ```
 
 ## 🪟 Windows 兼容性
@@ -87,15 +90,42 @@ npm run lint
 
 ## 使用方法
 
-### 启动服务器（重构后）
+### 启动服务器
 
 ```bash
-# 使用重构后的正确入口点
+# 全局安装后使用
+longmo-npm-search-mcp-server
+
+# 或使用npx（推荐）
+npx longmo-npm-search-mcp-server
+
+# 或直接运行构建后的文件
 node dist/src/index.js
 
-# 或使用npm脚本进行调试
+# 调试模式
 npm run debug:stdio
 ```
+
+### 配置NPM Registry模式
+
+服务器支持两种模式：
+
+1. **CLI模式（默认）**: 使用本地npm配置
+   ```bash
+   # 默认使用CLI模式，读取本地npm配置
+   npx longmo-npm-search-mcp-server
+   ```
+
+2. **API模式**: 使用指定的registry URL
+   ```bash
+   # 设置环境变量使用API模式
+   export NPM_REGISTRY_URL=https://registry.npmjs.org
+   npx longmo-npm-search-mcp-server
+   ```
+
+环境变量配置：
+- `NPM_REGISTRY_URL`: 设置自定义npm registry URL（启用API模式）
+- 不设置：使用CLI模式（本地npm配置）
 
 ### 调试与开发
 
@@ -107,10 +137,10 @@ npm run debug
 npm run test:mcp
 
 # 手动测试工具列表
-echo '{"jsonrpc": "2.0", "id": 2, "method": "tools/list", "params": {}}' | node dist/src/index.js
+echo '{"jsonrpc": "2.0", "id": 2, "method": "tools/list", "params": {}}' | npx longmo-npm-search-mcp-server
 
 # 手动测试搜索功能
-echo '{"jsonrpc": "2.0", "id": 3, "method": "tools/call", "params": {"name": "search_npm_packages", "arguments": {"query": "react"}}}' | node dist/src/index.js
+echo '{"jsonrpc": "2.0", "id": 3, "method": "tools/call", "params": {"name": "search_npm_packages", "arguments": {"query": "react"}}}' | npx longmo-npm-search-mcp-server
 ```
 
 该服务器提供一个工具：
