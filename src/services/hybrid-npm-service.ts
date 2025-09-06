@@ -41,8 +41,15 @@ export class HybridNpmService {
     try {
       logger.info(`Searching NPM packages with CLI: ${query}`);
 
-      // 使用npm search命令，继承用户的npm配置
-      const { stdout, stderr } = await execPromise(`npm search "${query}" --json`);
+      // 使用npm search命令，继承用户的npm配置，添加超时控制
+      const execResult = await Promise.race([
+        execPromise(`npm search "${query}" --json`),
+        new Promise((_, reject) =>
+          setTimeout(() => reject(new Error('npm search command timeout')), 30000)
+        )
+      ]) as { stdout: string; stderr: string };
+
+      const { stdout, stderr } = execResult;
 
       // 过滤掉npm配置警告信息
       const npmConfigWarnings = [
@@ -87,6 +94,10 @@ export class HybridNpmService {
         time: new Date().toISOString(),
       };
     } catch (error) {
+      if (error instanceof Error && error.message === 'npm search command timeout') {
+        logger.error(`npm search command timeout for query: ${query}`);
+        throw new Error(`npm search command timeout: ${query}`);
+      }
       logger.error(`Error searching NPM packages with CLI: ${query}`, error as Error);
       throw error;
     }
@@ -106,7 +117,20 @@ export class HybridNpmService {
     try {
       logger.info(`Searching NPM packages with API: ${query}`);
 
-      const response = await fetch(url);
+      // 添加AbortController用于超时控制
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 15000); // 15秒超时
+
+      const response = await fetch(url, {
+        signal: controller.signal,
+        headers: {
+          'User-Agent': 'npm-search-mcp-server/1.0.0',
+          'Accept': 'application/json',
+        }
+      });
+
+      clearTimeout(timeoutId);
+
       if (!response.ok) {
         throw new Error(`NPM API request failed: ${response.status} ${response.statusText}`);
       }
@@ -139,6 +163,10 @@ export class HybridNpmService {
         time: new Date().toISOString(),
       };
     } catch (error) {
+      if (error instanceof Error && error.name === 'AbortError') {
+        logger.error(`NPM API request timeout for query: ${query}`);
+        throw new Error(`NPM API request timeout: ${query}`);
+      }
       logger.error(`Error searching NPM packages with API: ${query}`, error as Error);
       throw error;
     }
